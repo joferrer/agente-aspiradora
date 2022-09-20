@@ -1,16 +1,39 @@
-import {Grid,Paper,Box, Button} from '@mui/material';
+import {Grid,Paper,Box, Button, TextareaAutosize} from '@mui/material';
 import {Coronavirus,CleaningServices} from  '@mui/icons-material'
 import { ItemTablero } from './Components/ItemTablero';
 
 import { useCleaner } from './hooks/useCleaner';
+import { useEffect } from 'react';
 
+/**
+ * Este es el tablero inicial! 
+ * Cada 1 representa una casilla con mugre. 0 es entonces una casilla limpia.
+ * TODO: HACER QUE EL ARRAY TENGA VALORES 0 Y 1 DE FORMA ALEATORIA.
+ */
+const tableroInicial = [1,1,1];
 
-const tableroInicial = [1,1,1,0];
+/**
+ * Posición inicial del limpiador.
+ * TODO: HACER QUE LA POSCICIÓN INICIAL SEA ALEATORIA.
+ */
+const posicionIncialLimpiador = 0;
+
+/**
+ * Cantidad de pasos iniciales. 
+ * TODO: SE SUPONE QUE SE INCIAN CON 1000 PASOS, PERO SON MUCHOS. 
+ */
+const inicialpasos = 1;
 
 export const Tablero = () => {
 
-    const {tablero,limpiador,cambiarValorCelda,limpiar} = useCleaner(tableroInicial);
-
+    const {tablero,limpiador,pasos,cambiarValorCelda,limpiar,getPasos, reiniciar} = useCleaner({tableroInicial, posicionIncialLimpiador, inicialpasos});
+    
+    const reiniciarTablero = ()=>{
+        reiniciar();
+    }
+   
+   
+    
     const generarCeldas = ()=> tablero.map((celda,index)=>(
         <ItemTablero key={`celda${index}`}>
             
@@ -28,8 +51,21 @@ export const Tablero = () => {
         </ItemTablero>
     ));
   return (
+    <>  
+        <TextareaAutosize
+            
+            maxRows={4}
+            aria-label="maximum height"
+            placeholder="Pasos del limpiador"
+            value={pasos}
+            disabled
 
-    <Box sx={{ width: '100%' }}>
+            style={{ width: 400, 
+                    height: 200,
+                    margin: 20 
+                    }}
+        />
+        <Box sx={{ width: '100%' }}>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 0.1 }}>
 
             {
@@ -40,9 +76,12 @@ export const Tablero = () => {
             
         </Grid>
 
-        <Button onClick={()=>limpiar()}>Limpiar</Button>
+    
+        <Button onClick={()=>reiniciarTablero()}>Reiniciar</Button>
     </Box>
 
+    </>
+    
     
   )
 }

@@ -1,6 +1,6 @@
 import {Grid, Typography} from '@mui/material';
 
-export const TableroLayout = ({children, title = ''}) => {
+export const TableroLayout = ({children, title = 'Aspiradora megaPro'}) => {
   return (
     <Grid container
           spacing={0}
@@ -19,7 +19,7 @@ export const TableroLayout = ({children, title = ''}) => {
                   >
                     
 
-                    <Typography variant='h5' sx={{mb:1}}>{title}</Typography>
+                    <Typography textAlign={'center'} variant='h5' sx={{mb:1}}>{title}</Typography>
 
                     {children}
             </Grid>
