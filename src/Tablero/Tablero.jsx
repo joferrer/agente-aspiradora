@@ -22,11 +22,11 @@ const posicionIncialLimpiador = 0;
  * Cantidad de pasos iniciales. 
  * TODO: SE SUPONE QUE SE INCIAN CON 1000 PASOS, PERO SON MUCHOS. 
  */
-const inicialpasos = 1;
+const inicialpasos = 4;
 
 export const Tablero = () => {
 
-    const {tablero,limpiador,pasos,cambiarValorCelda,limpiar,getPasos, reiniciar} = useCleaner({tableroInicial, posicionIncialLimpiador, inicialpasos});
+    const {tablero,limpiador,pasos,cambiarValorCelda,limpiar,getPasos, reiniciar,iniciar, detener} = useCleaner({tableroInicial, posicionIncialLimpiador, inicialpasos});
     
     const reiniciarTablero = ()=>{
         reiniciar();
@@ -76,7 +76,7 @@ export const Tablero = () => {
             
         </Grid>
 
-    
+        <Button onClick={()=>iniciar()}>Limpiar</Button>
         <Button onClick={()=>reiniciarTablero()}>Reiniciar</Button>
     </Box>
 
