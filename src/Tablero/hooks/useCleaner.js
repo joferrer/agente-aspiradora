@@ -8,14 +8,15 @@ import { useEffect, useState } from 'react';
  * @param {*} param0 
  * @returns 
  */
-export const useCleaner = ({tableroInicial=[1,1],inicialpasos= 4, posicionIncialLimpiador=0}) => {
+export const useCleaner = ({tableroInicial=[1,1],inicialpasos= 4, celdaInicial=0}) => {
 
-    const [tablero, setTablero] = useState(tableroInicial);
-    const [limpiador, setlimpiador] = useState(posicionIncialLimpiador);
-    const [pasos, setpasos] = useState(inicialpasos);
-    const [start, setStart] = useState(false);
-    const [puntuacion, setPuntuacion] = useState(0);
-    const [derecha, setDireccion] = useState(true);
+    const [tablero, setTablero]               = useState(tableroInicial);
+    const [limpiador, setlimpiador]           = useState(celdaInicial);
+    const [pasos, setpasos]                   = useState(inicialpasos);
+    const [start, setStart]                   = useState(false);
+    const [puntuacion, setPuntuacion]         = useState(0);
+    const [derecha, setDireccion]             = useState(true);
+    const [movimientos, setMovimientos]       = useState('');
 
     /**
      * useEffect dispara el renderizado de la app. 
@@ -35,7 +36,7 @@ export const useCleaner = ({tableroInicial=[1,1],inicialpasos= 4, posicionIncial
        * @param {int} index  Posición de la celda que se quiere cambiar.
        */
     const cambiarValorCelda = (index = 0)=>{
-       
+        console.log(" sdsds"+tableroInicial);
         tablero [index] = !tablero[index];
         setTablero([...tablero]);
         console.log(tablero);
@@ -56,6 +57,7 @@ export const useCleaner = ({tableroInicial=[1,1],inicialpasos= 4, posicionIncial
         if( hayMugre ){
             setPuntuacion(puntuacion + 1 ); //Se premia
             cambiarValorCelda(limpiador); //Limpia
+            setMovimientos(movimientos + 'LIMPIA \n');
         }
         else{
             setpasos(pasos - 1 );
@@ -63,14 +65,17 @@ export const useCleaner = ({tableroInicial=[1,1],inicialpasos= 4, posicionIncial
             if(limpiador == 0) {
                 setlimpiador(limpiador + 1);
                 setDireccion(true);
+                setMovimientos(movimientos + 'DERECHA \n');
             }   
             else if(limpiador == tablero.length -1){
                 setlimpiador(limpiador -1 );
                 //IZQUIERDA
                 setDireccion(false);
+                setMovimientos(movimientos + 'IZQUIERDA \n');
             }
             else{
                 derecha ? setlimpiador(limpiador + 1) : setlimpiador(limpiador - 1);
+                derecha ? setMovimientos(movimientos + 'DERECHA \n'): setMovimientos(movimientos + 'IZQUIERDA \n');
             }
                  
         }
@@ -95,16 +100,21 @@ export const useCleaner = ({tableroInicial=[1,1],inicialpasos= 4, posicionIncial
     }
 
     const reiniciar = ()=>{
-        console.log(tableroInicial)
-        setTablero([...tableroInicial]);
-        setlimpiador(posicionIncialLimpiador);
+        console.log("tb: "+tableroInicial)
+        
+        setlimpiador(celdaInicial);
         setpasos(inicialpasos);
+        setStart(false);
+        setTablero([...tableroInicial]);
     }
 
   return {
     tablero,
     limpiador,
     pasos,
+    movimientos,
+    start,
+    setlimpiador,
     cambiarValorCelda,
     getPasos,
     reiniciar,
