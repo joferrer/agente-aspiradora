@@ -16,13 +16,13 @@ const tableroInicial = [1,1,1];
  * Posición inicial del limpiador.
  * TODO: HACER QUE LA POSCICIÓN INICIAL SEA ALEATORIA.
  */
-const posicionIncialLimpiador = 0;
+const posicionIncialLimpiador = 2;
 
 /**
  * Cantidad de pasos iniciales. 
  * TODO: SE SUPONE QUE SE INCIAN CON 1000 PASOS, PERO SON MUCHOS. 
  */
-const inicialpasos = 4;
+const inicialpasos = 3;
 
 export const Tablero = () => {
 

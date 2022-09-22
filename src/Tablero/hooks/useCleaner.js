@@ -42,26 +42,8 @@ export const useCleaner = ({tableroInicial=[1,1],inicialpasos= 4, posicionIncial
         
     }
     
-    const limpiar =()=>{
-
-        const hayMugre = tablero[limpiador] == 1;
-
-        // Si hay mugre. El agente es premidado con 1 paso más por limpiar.
-         hayMugre ? setPuntuacion(pasos + 1 ): setPuntuacion(pasos - 1 );
-   
-        // Movimiento derecha.
-        if(limpiador < tablero.length-1)
-            tablero[limpiador] == 1 ? cambiarValorCelda(limpiador) : setlimpiador( limpiador + 1 );
-        //Movimiento izquierda. NO FUNCIONA :(
-        else if (limpiador > 0){
-            tablero[limpiador] == 1 ? cambiarValorCelda(limpiador) : setlimpiador( limpiador - 1 );
-            
-        }
-       
-         
-    }
      /**
-         * Si hay mugre -> Limpia.
+         * Si hay mugre -> Limpia y premia
          * Si no hay mugre -> SE MUEVE. 
          * MOVIMIENTO
          * 1. Limpiador en el borde izquierdo => limpiador = 0 -> Derecha
@@ -69,10 +51,11 @@ export const useCleaner = ({tableroInicial=[1,1],inicialpasos= 4, posicionIncial
          * 3. Limpiador en medio -> Depende:  derecha ? -> derecha SINO izquierda. 
          */
     const limpiar2 =()=>{
+        const hayMugre = tablero[limpiador] == 1 ; 
 
-        if( tablero[limpiador] == 1 ){
-            setPuntuacion(puntuacion + 1 );
-            cambiarValorCelda(limpiador);
+        if( hayMugre ){
+            setPuntuacion(puntuacion + 1 ); //Se premia
+            cambiarValorCelda(limpiador); //Limpia
         }
         else{
             setpasos(pasos - 1 );
@@ -123,7 +106,6 @@ export const useCleaner = ({tableroInicial=[1,1],inicialpasos= 4, posicionIncial
     limpiador,
     pasos,
     cambiarValorCelda,
-    limpiar,
     getPasos,
     reiniciar,
     iniciar,
