@@ -1,4 +1,4 @@
-import {Grid,Paper,Box, Button, TextareaAutosize, TextField, MenuItem, Select, InputLabel} from '@mui/material';
+import {Grid,Paper,Box, Button, TextareaAutosize, TextField, MenuItem, Select, InputLabel, Typography} from '@mui/material';
 import {Coronavirus,CleaningServices} from  '@mui/icons-material'
 import { ItemTablero } from './Components/ItemTablero';
 
@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 /**
  * Este es el tablero inicial! 
  * Cada 1 representa una casilla con mugre. 0 es entonces una casilla limpia.
- * TODO: HACER QUE EL ARRAY TENGA VALORES 0 Y 1 DE FORMA ALEATORIA.
+ * TODO: HACER QUE SE PUEDA MODIFICAR EL TAMAÑO DEL ARRAY
  */
 const tableroInicial = Array.from({length: 4}, () => Math.floor(Math.random() * 2));
 console.log(tableroInicial)
@@ -28,7 +28,7 @@ const inicialpasos = 6;
 export const Tablero = () => {
 
     const  [celdaInicial, setceldaInicial] = useState(0);
-    const {tablero,limpiador,pasos,movimientos,start,setlimpiador, reiniciar,iniciar} = useCleaner({tableroInicial, celdaInicial, inicialpasos});
+    const {tablero,limpiador,pasos,movimientos,start,puntuacion,setlimpiador, reiniciar,iniciar} = useCleaner({tableroInicial, celdaInicial, inicialpasos});
 
     useEffect(() => {
       setlimpiador(celdaInicial);
@@ -66,7 +66,10 @@ export const Tablero = () => {
     ));
   return (
     <>  
-        <Box  >
+        <Box display={'flex'} justifyContent={'space-between'} alignContent={'center'}>
+            
+            <Typography alignSelf={'center'}>La puntuación es: {puntuacion} / {inicialpasos}</Typography>
+            <Box>
             <InputLabel id="casilla-label">Casilla inicio</InputLabel>
             <Select
                 labelId="casilla-label"
@@ -82,6 +85,8 @@ export const Tablero = () => {
                 }
             
             </Select>
+            </Box>
+            
         </Box>
         <TextareaAutosize
             

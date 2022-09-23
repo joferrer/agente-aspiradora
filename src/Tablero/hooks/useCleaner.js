@@ -3,8 +3,14 @@
 import { useEffect, useState } from 'react';
 
 /**
- * 1. APENAS CARGA se ejecuta el useEffect().
- * 2. Limpia con base al número de pasos. 
+ * SECUENCIA DE PERCEPCIONES 
+ * CASILLA X, SUCIA  --> LIMPIAR
+ * CASILLA X, LIMPIA --> DERECHA
+ * CASILLA X, LIMPIA --> IZQUIERDA
+ * BORDE IZQ, SUCIO  --> LIMPIAR
+ * BORDE DER, SUCIO  --> LIMPIAR
+ * BORDE IZQ, LIMPIO --> DERECHA
+ * BORDE DER, LIMPIO --> IZQUIERDA
  * @param {*} param0 
  * @returns 
  */
@@ -26,10 +32,17 @@ export const useCleaner = ({tableroInicial=[1,1],inicialpasos= 4, celdaInicial=0
             setTimeout(() =>{
                 limpiar2();  
                 
-            }, 1000);
+                
+            }, 1000);        
         }
+        if (pasos == 0) setStart(false);
+        
         //console.log(pasos);
+
       }, [start,pasos, puntuacion])
+
+
+
     
       /**
        * Cambia el valor de una celda. 
@@ -53,11 +66,10 @@ export const useCleaner = ({tableroInicial=[1,1],inicialpasos= 4, celdaInicial=0
          */
     const limpiar2 =()=>{
         const hayMugre = tablero[limpiador] == 1 ; 
-
         if( hayMugre ){
             setPuntuacion(puntuacion + 1 ); //Se premia
             cambiarValorCelda(limpiador); //Limpia
-            setMovimientos(movimientos + 'LIMPIA \n');
+            setMovimientos(movimientos + `CASILLA ${limpiador}, SUCIA -> LIMPIAR \n`);
         }
         else{
             setpasos(pasos - 1 );
@@ -65,17 +77,19 @@ export const useCleaner = ({tableroInicial=[1,1],inicialpasos= 4, celdaInicial=0
             if(limpiador == 0) {
                 setlimpiador(limpiador + 1);
                 setDireccion(true);
-                setMovimientos(movimientos + 'DERECHA \n');
+                setMovimientos(movimientos + `CASILLA ${limpiador}, LIMPIA -> DERECHA \n`);
             }   
             else if(limpiador == tablero.length -1){
                 setlimpiador(limpiador -1 );
                 //IZQUIERDA
                 setDireccion(false);
-                setMovimientos(movimientos + 'IZQUIERDA \n');
+                setMovimientos(movimientos + `CASILLA ${limpiador}, LIMPIA -> IZQUIERDA \n`);
             }
             else{
                 derecha ? setlimpiador(limpiador + 1) : setlimpiador(limpiador - 1);
-                derecha ? setMovimientos(movimientos + 'DERECHA \n'): setMovimientos(movimientos + 'IZQUIERDA \n');
+                derecha ? 
+                    setMovimientos(movimientos + `CASILLA ${limpiador}, LIMPIA -> DERECHA \n`): 
+                    setMovimientos(movimientos + `CASILLA ${limpiador}, LIMPIA -> IZQUIERDA \n`);
             }
                  
         }
@@ -101,11 +115,12 @@ export const useCleaner = ({tableroInicial=[1,1],inicialpasos= 4, celdaInicial=0
 
     const reiniciar = ()=>{
         console.log("tb: "+tableroInicial)
-        
         setlimpiador(celdaInicial);
         setpasos(inicialpasos);
         setStart(false);
         setTablero([...tableroInicial]);
+        setMovimientos('');
+        setPuntuacion(0);
     }
 
   return {
@@ -114,6 +129,7 @@ export const useCleaner = ({tableroInicial=[1,1],inicialpasos= 4, celdaInicial=0
     pasos,
     movimientos,
     start,
+    puntuacion,
     setlimpiador,
     cambiarValorCelda,
     getPasos,
